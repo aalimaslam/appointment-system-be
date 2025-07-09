@@ -40,10 +40,4 @@ import { DatabaseService } from './database.service';
   providers: [DatabaseService],
   exports: [DatabaseService],
 })
-export class DatabaseModule {
-  constructor(private readonly databaseService: DatabaseService,
-              private readonly configService: ConfigService
-  ) {
-    console.log(this.configService.get<string>('DATABASE_CERT'));
-  }
-}
+export class DatabaseModule {}
