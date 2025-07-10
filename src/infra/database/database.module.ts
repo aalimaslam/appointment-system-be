@@ -10,12 +10,14 @@ import { DatabaseService } from './database.service';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
+        type: configService.get<string>('DATABASE_TYPE', 'postgres') as any,
         host: configService.get<string>('DATABASE_HOST'),
         port: configService.get<number>('DATABASE_PORT'),
         username: configService.get<string>('DATABASE_USER'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
+        entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
+        migrations: [__dirname + '/../../migrations/**/*{.ts,.js}'],
         autoLoadEntities: true,
         synchronize: configService.get<boolean>('DATABASE_SYNCHRONIZE', false),
         ssl: configService.get<boolean>('DATABASE_SSL_ENABLED', false)
