@@ -1,17 +1,21 @@
 import { registerAs } from '@nestjs/config';
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
-export default registerAs('postgres', () => ({
-  type: process.env.DATABASE_TYPE,
-  host: process.env.DATABASE_HOST,
-  port: Number(process.env.DATABASE_PORT) || 5432,
-  password: process.env.DATABASE_PASSWORD,
-  dbName: process.env.DATABASE_NAME,
-  username: process.env.DATABASE_USER,
-  synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
-  maxConnections: Number(process.env.DATABASE_MAX_CONNECTIONS) || 100,
-  sslEnabled: process.env.DATABASE_SSL_ENABLED === 'true',
-  rejectUnauthorized: process.env.DATABASE_REJECT_UNAUTHORIZED === 'true',
-  ca: process.env.DATABASE_CA,
-  key: process.env.DATABASE_KEY,
-  cert: process.env.DATABASE_CERT,
-}));
+export default registerAs(
+  'postgres',
+  (): PostgresConnectionOptions => ({
+    type: process.env.DATABASE_TYPE as any,
+    host: process.env.DATABASE_HOST,
+    port: +process.env.DATABASE_PORT || 5432,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME,
+    username: process.env.DATABASE_USER,
+    synchronize: process.env.NODE_ENV === 'development',
+    ssl: process.env.NODE_ENV === 'production',
+    entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
+    logging: process.env.NODE_ENV === 'development',
+    extra: {
+      max: +process.env.DATABASE_MAX_CONNECTIONS || 100,
+    },
+  }),
+);

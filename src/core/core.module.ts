@@ -6,6 +6,7 @@ import { SuperAdminModule } from './super-admin/super-admin.module';
 import { LoggerModule } from './logger/logger.module';
 import { ConfigurationModule } from './configuration/configuration.module';
 import { UtilsModule } from './utils/utils.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   controllers: [],
@@ -17,6 +18,7 @@ import { UtilsModule } from './utils/utils.module';
     LoggerModule,
     ConfigurationModule,
     UtilsModule,
+    AuthModule,
   ],
 })
 export class CoreModule {}
